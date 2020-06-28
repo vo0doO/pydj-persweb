@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  {% block title %}
+    <title>Веб портал - Кирсанова Данила Олеговича</title>
+  {% endblock title %}
+  {% load static %}
+  <!-- Optional HEAD -->
+  {% block meta %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endblock meta %}{% block extra_meta %}{% endblock extra_meta %}
+  {% block link %}
+    <!-- Links -->
+    <link href="{% static 'favicon.ico' %}" rel="shortcut icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=ru">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.min.css">
+  {% endblock link %}{% block extra_link %}{% endblock extra_link %}
+</head>
+
+{% load static %}
+
+<body>
+
+  <div class="mdl-layout__container">
+    
+  {% if messages %}
+      {% for message in messages %}
+      <div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text">{{ message }}</div>
+        <button class="mdl-snackbar__action" type="button"></button>
+      </div>
+      {% endfor %}
+  {% endif %}
+
+    
+
+  {% block style %}
+    {% include 'base/include/css/styles.css.html' %}
+  {% endblock style %}{% block extra_style %}{% endblock extra_style %}
+  <div class="mdl-layout">
+  <!-- Раскладка -->
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <!-- Header -->
+    {% block header %} 
+      {% include 'base/include/html/molecule/header.html' %}
+    {% endblock header %}
+    <!-- Drawer -->
+    {% block drawer %}
+            {% include 'base/include/html/atom/drawer.html' %}
+    {% endblock drawer %}
+    
+      <main class="android-content mdl-layout__content"> 
+        <!-- Content -->
+        {% block content %}
+
+        {% endblock content %}
+      </main>
+      
+    </div>
+    
+  </div>
+  {% include 'base/include/html/atom/footer.html' %}
+</div>
+  
+  
+
+  <!-- Java Script -->
+  {% block javascript %}
+    <script src="https://code.getmdl.io/1.2.1/material.min.js"> </script>
+    {% include 'base/include/js/heap.js.html' %}
+    {% include 'base/include/js/metrika.js.html' %}
+  {% endblock javascript %}
+  {% block optional_javascript %}
+  {% endblock optional_javascript %}
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+{% load static %}
+<div class="mdl-layout__drawer">
+  {% if user.is_authenticated %}
+    <span class="mdl-layout-title">
+      <a href="/"><img class="android-logo-image" src='{% static "welcome/images/android-logo-white.png" %}'></a>
+    </span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="http://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=2875&dst=100075&date=21.05.2020"
+      >Конституция</a>
+      <a class="mdl-navigation__link" href="http://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=346019&dst=1000000001&date=21.05.2020#029392117186235645"
+      >Поправки</a>
+      <a class="mdl-navigation__link" href="{% url 'curiosity:index' %}"
+      >Блог</a>
+      <a class="mdl-navigation__link" href="/admin"
+      >Админка</a>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="{% url 'account_logout' %}"
+      >Выйти</a>
+  {% else %}
+    <span class="mdl-layout-title">
+      <img class="android-logo-image" src='{% static "welcome/images/android-logo-white.png" %}'>
+    </span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="{% url 'account_login' %}"
+      >Войти</a>
+    </nav>
+  {% endif %}
+</div>

@@ -1,0 +1,13 @@
+{% load static %}
+<header class="android-header mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Титул -->
+      <span class="android-title mdl-layout-title">
+        <a href="/"><img class="android-logo-image" src='{% static "welcome/images/android-logo.png" %}'></a>
+      </span>
+      <!-- Добавьте вставку, чтобы выровнять навигацию вправо -->
+      <div class="android-header-spacer mdl-layout-spacer"></div>
+      <!-- Навигация. Мы прячем его в маленьких экранах. -->
+      {% include 'base/include/html/atom/nav.html' %}
+    </div>
+</header>

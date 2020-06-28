@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <a name="top"></a>
+  
+    {% comment %} Block 1 {% endcomment %}
+      {% for sect in sections %}
+        {% if sect.id == 1 %}
+        <div class="android-be-together-section mdl-typography--text-center">
+          <div class="logo-font android-slogan">{{ sect.title }}</div>
+          <div class="logo-font android-sub-slogan">{{ sect.subtitle }}</div>
+          <div class="logo-font android-create-character">
+            <a href={{ sect.link_url }}><img src='{% static "welcome/images/andy.png" %}'> {{ sect.link_text }}</a>
+          </div>
+          <a href="#last">
+            <button class="android-fab mdl-button mdl-button--colored mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+              <i class="material-icons">expand_more</i>
+            </button>
+          </a>
+        </div>
+        {% endif %}
+      {% endfor %}
+     
+
+    {% comment %} Block 2 {% endcomment %}
+      {% for sect in sections %}
+        {% if sect.id == 2 %}
+          <div class="android-wear-section">
+            <div class="android-wear-band">
+              <div class="android-wear-band-text">
+                <div class="mdl-typography--display-2 mdl-typography--font-thin">{{ sect.title }}</div>
+                <p class="mdl-typography--headline mdl-typography--font-thin">
+                  {{ sect.subtitle }}
+                </p>
+                <p>
+                  <a class="mdl-typography--font-regular mdl-typography--text-uppercase android-alt-link" href={{ sect.link_url }}>
+                    {{ sect.link_text }}<i class="material-icons">chevron_right</i>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+
+    
+      {% comment %} Block 3 {% endcomment %}
+        {% for sect in sections %}
+          {% if sect.id == 3 %}
+            <div class="android-customized-section" id="last">
+              <div class="android-customized-section-text">
+                <div class="mdl-typography--font-light mdl-typography--display-1-color-contrast">{{sect.title}}</div>
+                <p class="mdl-typography--font-light">
+                  {{ sect.subtitle }}
+                  <br>
+                  <a href={{ sect.link_url }} class="android-link mdl-typography--font-light">{{ sect.link_text }}</a></a>
+                </p>
+              </div>
+              <div class="android-customized-section-image"></div>
+            </div>
+          {% endif %}
+        {% endfor %}
+{% endblock %}
