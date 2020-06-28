@@ -4,22 +4,31 @@
   {% block title %}
     <title>Веб портал - Кирсанова Данила Олеговича</title>
   {% endblock title %}
+  
   {% load static %}
-  <!-- Optional HEAD -->
-  {% block meta %}
+
+    {% block meta %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% endblock meta %}{% block extra_meta %}{% endblock extra_meta %}
+    {% endblock meta %}
+  
+  {% block extra_meta %}
+  {% endblock extra_meta %}
+  
   {% block link %}
-    <!-- Links -->
     <link href="{% static 'favicon.ico' %}" rel="shortcut icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=ru">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.min.css">
-  {% endblock link %}{% block extra_link %}{% endblock extra_link %}
-</head>
+    <!-- Required styles for Material Web -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> 
+  {% endblock link %}
 
-{% load static %}
+  {% block extra_link %}
+  {% endblock extra_link %}
+
+</head>
 
 <body>
 
@@ -34,18 +43,23 @@
       {% endfor %}
   {% endif %}
 
-    
-
   {% block style %}
     {% include 'base/include/css/styles.css.html' %}
-  {% endblock style %}{% block extra_style %}{% endblock extra_style %}
+  {% endblock style %}
+  
+  {% block extra_style %}
+  {% endblock extra_style %}
+
   <div class="mdl-layout">
+
   <!-- Раскладка -->
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
     <!-- Header -->
     {% block header %} 
       {% include 'base/include/html/molecule/header.html' %}
     {% endblock header %}
+
     <!-- Drawer -->
     {% block drawer %}
             {% include 'base/include/html/atom/drawer.html' %}
@@ -64,16 +78,19 @@
   {% include 'base/include/html/atom/footer.html' %}
 </div>
   
-  
+
 
   <!-- Java Script -->
-  {% block javascript %}
     <script src="https://code.getmdl.io/1.2.1/material.min.js"> </script>
     {% include 'base/include/js/heap.js.html' %}
     {% include 'base/include/js/metrika.js.html' %}
-  {% endblock javascript %}
+
   {% block optional_javascript %}
   {% endblock optional_javascript %}
+
+  <!-- Required Material Web JavaScript library -->
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
 </body>
 
 </html>

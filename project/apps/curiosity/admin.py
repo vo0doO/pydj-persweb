@@ -38,7 +38,7 @@ class AdminPost(admin.ModelAdmin):
 
 @admin.register(Image)
 class AdminImage(admin.ModelAdmin):
-    list_display = ('created_time', 'id',)
+    list_display = ('created_time', 'id', 'url',)
     list_filter = ('created_time',)
 
 

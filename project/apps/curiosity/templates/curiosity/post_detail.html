@@ -1,9 +1,19 @@
 {% extends 'base/base.html' %}
+    {% block extra_meta %}
+        <meta property="og:title" content="{{ object.title }}" />
+        <meta property="og:image" content="http://io.net.ru:1443/img/{{object.img.id}}.png_draws.png" />
 
-{% block content %}
-    {% if object.pk %}
-        <p>{{ object.title }}</p>
-    {% else %}
-        <p>Ошибка в названии переменной</p>
-    {% endif %}
-{% endblock %}
+    {% endblock extra_meta %}
+
+    {% block content %}
+    <a href={% url "curiosity:post-list" %}><button>Назад</button></a>
+        {% if object.pk %}
+            <h1>{{ object.title }}</h1>
+                {{ object.html|safe|escape }}
+        {% else %}
+            <p>Ошибка в названии переменной</p>
+        {% endif %}
+        <script type="text/javascript">
+            document.write(VK.Share.button(false, {type: 'link', text: 'Опубликовать'}));
+        </script>
+    {% endblock %}
