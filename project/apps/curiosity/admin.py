@@ -25,7 +25,7 @@ class AdminTag(admin.ModelAdmin):
 class AdminPost(admin.ModelAdmin):
     fieldsets = (
         ('Действия', {'fields': ('author', 'created_date', )}),
-        ('Содержание', {'fields': ('title', 'text', 'html', 'img', 'fimg')}),
+        ('Содержание', {'fields': ('title', 'text', 'html', 'img',)}),
         ("Связи", {'fields': ('channel', 'tags',)}),
         ("Свойства", {'fields': ('status', 'url', 'slug',)}),
         )

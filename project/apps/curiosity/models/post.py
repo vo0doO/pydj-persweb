@@ -16,7 +16,7 @@ from authentication.models import CustomUser as User
 from project.apps.curiosity.models.author import PostAuthor
 from project.apps.curiosity.models.channel import Channel
 from project.apps.curiosity.models.comment import PostComment
-from project.apps.curiosity.models.image import Image
+from project.apps.curiosity.models.image import Image as CImage
 from project.apps.curiosity.models.log import Log
 from project.apps.curiosity.models.tag import Tag
 
@@ -98,20 +98,19 @@ class Post(models.Model):
 
     slug = models.SlugField(
         max_length=255,
-        null=False,
+        null=True,
+        blank=True,
         unique=True,
     )
 
     img = models.ForeignKey(
-        Image,
+        CImage,
         on_delete=models.SET_NULL,
         null=True,
         verbose_name="Первое изображение",
         related_name="%(app_label)s_%(class)s_related",
         related_query_name="%(app_label)s_%(class)ss",
     )
-
-    fimg = models.ImageField(storage=Image.get_storage(unix_pref='~/', windows_pref='d:/'), null=True, blank=True, verbose_name='Изображение')
     
     FINDED = "Обнаружен"
 
@@ -139,11 +138,18 @@ class Post(models.Model):
 
     def display_image(self):
         if self.slug:
-            return mark_safe('<img src="/static/curiosity/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
+            return mark_safe('<img src="http://io.net.ru:1443/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
         else:
             return 'none'
     display_image.short_description = 'Изображение'
     display_image.allow_tags = True
+
+    def format_html(self):
+        soup = BeautifulSoup(self.html, "lxml")
+        
+        imgs = soup.findAll({"img": "href"})
+        for img in imgs:
+            img["src"] = str("http://www.discoverychannel.ru" + img["src"])
 
     @property
     def is_readypub(self):

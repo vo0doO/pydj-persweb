@@ -6,9 +6,7 @@ app_name = "curiosity"
 
 # Curiosity Functions
 urlpatterns = [
-    url(r'^updatedb$', views.updatedb, name="updatedb"),
-    url(r'^posts/get/file$', views.post_maker, name='get_new_posts_of_file'),
-    url(r'^posts/get/net$',views.get_new_posts_of_network, name='get_new_posts_of_network'),
+    url(r'^posts/get/file$', views.post_maker, name='post_maker'),
     url(r'^authors/(?P<pk>[-id]+)/posts/list/$', views.PostByAuthorListView.as_view(), name="author-post-list"),
     url(r'^channels/(?P<id>[-\w]+)/posts/list/$', views.PostByChannelListView.as_view(), name="channel-posts"),
     url(r'^tags/(?P<pk>[-\w]+)/posts/list/$', views.PostByTagListView.as_view(), name="tag-posts"),

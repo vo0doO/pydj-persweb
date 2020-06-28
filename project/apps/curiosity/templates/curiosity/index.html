@@ -16,7 +16,7 @@
     <li><strong>Каналы:</strong> {{ num_channels }}</li>
     <li><strong>Тэги:</strong> {{ num_tags }}</li>
   </ul>
-  <a href={% url 'curiosity:get_new_posts_of_file' %}>
+  <a href={% url 'curiosity:post_maker' %}>
     {% if user.is_superuser %}
       <button 
         class="btn btn-primary btn-lg"
@@ -27,34 +27,6 @@
         class="btn btn-primary btn-lg"
         disabled
         >Получить новые посты из файла
-      </button>
-    {% endif %}
-  </a>
-  <a href={% url 'curiosity:get_new_posts_of_network' %}>
-    {% if user.is_superuser %}
-      <button 
-        class="btn btn-primary btn-lg"
-        >Получить новые посты из интернета
-      </button>
-    {% else %}
-      <button 
-        class="btn btn-primary btn-lg"
-        disabled
-        >Получить новые посты из интернета
-      </button>
-    {% endif %}
-  </a>
-  <a href={% url 'curiosity:updatedb' %}>
-    {% if user.is_superuser %}
-      <button 
-        class="btn btn-primary btn-lg"
-        >Получить новые посты из файла
-      </button>
-    {% else %}
-      <button 
-        class="btn btn-primary btn-lg"
-        disabled
-        >Апгрейд базы данных
       </button>
     {% endif %}
   </a>
