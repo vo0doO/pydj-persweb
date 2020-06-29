@@ -11,7 +11,7 @@
     <a 
       class="mdl-navigation__link mdl-typography--text-uppercase" 
       href="{% url 'curiosity:index' %}"
-    >Блог</a>
+    >Панель управления</a>
     <a 
       class="mdl-navigation__link mdl-typography--text-uppercase" 
       href="/admin"
@@ -21,6 +21,10 @@
       href="{% url 'account_logout' %}"
     >Выйти</a>
   {% else %}
+    <a 
+      class="mdl-navigation__link mdl-typography--text-uppercase" 
+      href="{% url 'curiosity:post-list' %}"
+    >Интересное</a>
     <a 
       class="mdl-navigation__link mdl-typography--text-uppercase" 
       href="{% url 'account_login' %}"

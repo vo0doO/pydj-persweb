@@ -21,6 +21,10 @@
       <img class="android-logo-image" src='{% static "welcome/images/android-logo-white.png" %}'>
     </span>
     <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="{% url 'curiosity:post-list' %}"
+      >Интересное</a>
+    </nav>
+    <nav class="mdl-navigation">
       <a class="mdl-navigation__link" href="{% url 'account_login' %}"
       >Войти</a>
     </nav>

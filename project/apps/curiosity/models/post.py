@@ -129,6 +129,10 @@ class Post(models.Model):
         default="Обнаружен"
     )
 
+    def text_wrap(self):
+        if len(self.text) > 196:    return self.text[0:200] + "..."
+        else:   return text
+
     def get_absolute_url(self):
         return HttpResponseRedirect(reverse("curiosity:post-detail", args=(self.slug,)[1:]))
 

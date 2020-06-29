@@ -54,8 +54,9 @@ l = get_logs()
 
 
 class PostListView(ListView):
+    paginate_by = 8
     models = Post
-    queryset = Post.objects.order_by('-pub_date')
+    queryset = Post.objects.order_by('-created_date')
     context_object_name = 'post_list'
     template_name = "curiosity/post_list.html"
 
@@ -181,8 +182,7 @@ class UserDeleteView(DeleteView):
     fields = "__all__"
 
 
-"""
-    class PostAuthorListView(ListView):
+class PostAuthorListView(ListView):
     models = PostAuthor
     fields = "__all__"
 
@@ -193,29 +193,28 @@ class UserDeleteView(DeleteView):
     paginate_by=10
 
 
-    class PostAuthorCreateView(CreateView):
-        models = PostAuthor
-        fields = "__all__"
+class PostAuthorCreateView(CreateView):
+    models = PostAuthor
+    fields = "__all__"
 
 
-    class PostAuthorUpdateView(UpdateView):
-        models = PostAuthor
-        fields = "__all__"
+class PostAuthorUpdateView(UpdateView):
+    models = PostAuthor
+    fields = "__all__"
 
 
-    class PostAuthorDetailView(DetailView):
-        models = PostAuthor
-        queryset = PostAuthor.objects.all()
-        fields = "__all__"
+class PostAuthorDetailView(DetailView):
+    models = PostAuthor
+    queryset = PostAuthor.objects.all()
+    fields = "__all__"
+    def get_queryset(self):
+        return self.queryset.filter(user=self.kwargs.get('user'))
 
-        def get_queryset(self):
-            return self.queryset.filter(user=self.kwargs.get('user'))
 
+class PostAuthorDeleteView(DeleteView):
+    model = PostAuthor
+    fields = "__all__"
 
-    class PostAuthorDeleteView(DeleteView):
-        model = PostAuthor
-        fields = "__all__"
-"""
 
 
 class PostByChannelListView(ListView):
