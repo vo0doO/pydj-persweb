@@ -1,7 +1,7 @@
 import os
 import re
 from urllib.parse import urlparse
-
+import datetime
 import django
 import requests
 from bs4 import BeautifulSoup
@@ -111,7 +111,7 @@ class Post(models.Model):
         related_name="%(app_label)s_%(class)s_related",
         related_query_name="%(app_label)s_%(class)ss",
     )
-    
+
     FINDED = "Обнаружен"
 
     PUBLISHED = "Опубликован"
@@ -130,8 +130,10 @@ class Post(models.Model):
     )
 
     def text_wrap(self):
-        if len(self.text) > 196:    return self.text[0:200] + "..."
-        else:   return text
+        if len(self.text) > 196:
+            return self.text[0:200] + "..."
+        else:
+            return text
 
     def get_absolute_url(self):
         return HttpResponseRedirect(reverse("curiosity:post-detail", args=(self.slug,)[1:]))
@@ -142,7 +144,7 @@ class Post(models.Model):
 
     def display_image(self):
         if self.slug:
-            return mark_safe('<img src="http://io.net.ru:1443/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
+            return mark_safe('<img src="http://io.net.ru:2015/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
         else:
             return 'none'
     display_image.short_description = 'Изображение'
@@ -150,11 +152,14 @@ class Post(models.Model):
 
     def format_html(self):
         soup = BeautifulSoup(self.html, "lxml")
-        
         imgs = soup.findAll({"img": "href"})
         for img in imgs:
             img["src"] = str("http://www.discoverychannel.ru" + img["src"])
 
+    def get_comment_list(self):
+        comment_list = PostComment.objects.filter(post_id=self.id)
+        return comment_list[::-1]
+    
     @property
     def is_readypub(self):
         if self.text and self.title and self.img:
@@ -169,81 +174,69 @@ class Post(models.Model):
         permissions = (('can_mark_returned', 'Can mark returned'),)
 
     # def clean(self) -> None:
-
+    
     #     try:
+    
     #         if self.author is not None:
     #             print(f"{self.author} is author field")
     #         else:
     #             raise ValidationError(f"{self.author} field is not Validate")
-
+    
     #         if self.title is not None:
     #             print(f"{self.title} is title field")
     #         else:
     #             raise ValidationError(f"{self.title} field is not Validate")
-
+    
     #         if self.text is not None:
     #             print(f"{self.text} is text field")
     #         else:
     #             raise ValidationError(f"{self.text} field is not Validate")
-
-    #         if self.title is not None:
-    #             print(f"{self.title} is title field")
-    #         else:
-    #             raise ValidationError(f"{self.title} field is not Validate")
-
+    
     #         if self.html is not None:
     #             print(f"{self.html} is html field")
     #         else:
     #             raise ValidationError(f"{self.html} field is not Validate")
-
+    
     #         if self.url is not None:
     #             print(f"{self.url} is url field")
     #         else:
     #             raise ValidationError(f"{self.url} field is not Validate")
-
-    #         if self.text is not None:
-    #             print(f"{self.text} is text field")
-    #         else:
-    #             raise ValidationError(f"{self.text} field is not Validate")
-
+    
     #         if self.channel is not None:
     #             print(f"{self.channel} is channel field")
     #         else:
     #             raise ValidationError(f"{self.channel} field is not Validate")
-
+    
     #         if self.tags is not None:
     #             print(f"{self.tags} is tags field")
     #         else:
     #             raise ValidationError(f"{self.ags} field is not Validate")
-
+    
     #         if self.created_date is not None:
     #             print(f"{self.created_date} is created field")
     #         else:
     #             raise ValidationError(
     #                 f"{self.created_date} field is not Validate")
-
+    
     #         if self.pub is not None:
     #             print(f"{self.pub} is pub field")
     #         else:
     #             raise ValidationError(f"{self.pub_date} field is not Validate")
-
-    #         if self.self.rewrite is not None:
-    #             print(f"{self.rewrite} is rewrite field")
-    #         else:
-    #             raise ValidationError(f"{self.rewrite} field is not Validate")
-
+    
     #         if self.slug is not None:
     #             print(f"{self.slug} is slug field")
     #         else:
     #             raise ValidationError(f"{self.slug} field is not Validate")
-
+    
     #         if self.img is not None:
     #             print(f"{self.img} is img field")
     #         else:
     #             raise ValidationError(f"{self.img} field is not Validate")
+    
     #     except Exception as error:
     #         print(f"Error: {error.args}")
-    #         self.publish_post()
+    #         return
+
 
 if __name__ == "__main__":
     pass

@@ -18,7 +18,11 @@ urlpatterns += [
     url(r'^$', views.index, name='index'),
     url(r'^posts/$', views.PostListView.as_view(), name='post-list'),
     url(r'^posts/create/$', views.PostCreateView.as_view(), name='post-create'),
+
+
+
     url(r'^posts/(?P<slug>[-\w]+)/$', views.PostDetailView.as_view(), name="post-detail"),
+    url(r'^posts/(?P<slug>[-\w]+)/comment$', views.manage_comment, name="manage-comment"),
     url(r'^posts/(?P<slug>[-\w]+)/update/$', views.PostUpdateView.as_view(), name="post-change"),
     url(r'^posts/(?P<slug>[-\w]+)/delete/$', views.PostDeleteView.as_view(), name="post-delete"),
 ]

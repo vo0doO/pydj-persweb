@@ -13,6 +13,14 @@ import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
+from django.conf import settings
+from django.utils import timezone
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView, ListView, View
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 from django.core.files import File
@@ -22,13 +30,13 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-
+from django.contrib.contenttypes.models import ContentType
 from authentication.models import CustomUser as User
-from project.apps.curiosity.models import (Channel, Post,  # PostAuthor
-                                           Tag)
+from project.apps.curiosity.models import (Channel, Post, PostComment, Tag)
 from project.apps.curiosity.models import Image as CImage
 logger = logging.getLogger(__name__)
-
+import django.contrib.admin.helpers as help
+from django.contrib import messages
 
 def get_logs():
     fmt = logging.Formatter(
@@ -49,8 +57,34 @@ def get_logs():
     root_logger.setLevel(logging.INFO)
     return root_logger
 
-
 l = get_logs()
+
+
+from project.apps.curiosity.forms import PostCommentForm
+
+
+def manage_comment(request, slug):
+    post = Post.objects.get(slug=slug)
+    if request.method == "POST":
+        comment = PostComment.objects.create(post_id=post.id, author=request.user, post_date=datetime.datetime.now())
+        form = PostCommentForm(request.POST, instance=comment) or None
+        if form.is_valid():
+            if (form.cleaned_data['description'] is not Null) and (len(form.cleaned_data['description']) > 1):
+                comment.description = form.cleaned_data['description']
+                comment.save()
+                form.save()
+                return HttpResponseRedirect(str("/curiosity/posts/" + str(post.slug) + "/"))
+            else:
+                messages.error(self.request, "Коментарий не должен быть пустым !")
+                form = PostCommentForm()
+                return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
+        else:
+            messages.error(self.request, "Что-то пошло не так !")
+            form = PostCommentForm()
+            return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
+    else:
+        form = PostCommentForm()
+        return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
 
 
 class PostListView(ListView):
@@ -396,7 +430,6 @@ def get_html(html):
         clean_html += str(p)
     return clean_html
 
-
 def get_all_img(html, p):
         topic_images = html.findAll({"img": "href"})
         count = 0
@@ -485,3 +518,7 @@ def post_maker(request):
 
         time.sleep(10)
         continue
+
+from django.contrib.auth.decorators import login_required
+
+

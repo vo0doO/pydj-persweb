@@ -1,11 +1,14 @@
 from django.contrib import admin
 
-from project.apps.curiosity.models import Channel, Image, Log, Post, Tag, PostAuthor
+from project.apps.curiosity.models import Channel, Image, Log, Post, Tag, PostAuthor, PostComment
 
 
 class PostInline(admin.TabularInline):
     model = Post
 
+
+class PostCommentsInline(admin.TabularInline):
+    model = PostComment
 
 @admin.register(Channel)
 class AdminChannel(admin.ModelAdmin):
@@ -34,6 +37,9 @@ class AdminPost(admin.ModelAdmin):
     list_display = ('title', 'channel', 'display_tag', 'created_date', 'display_image',  'status', 'author')
     list_filter = ('channel', 'tags', 'status', 'created_date',  'rewrite_date',)
     filter_horizontal = ()
+    inlines = [PostCommentsInline]
+    list_per_page=10
+    actions=[]
 
 
 @admin.register(Image)
@@ -59,3 +65,11 @@ class AdminPostAuthor(admin.ModelAdmin):
     search_fields = ('user', 'bio',)
     filter_horizontal = ()
     inlines = [PostInline]
+
+
+@admin.register(PostComment)
+class AdminPostComment(admin.ModelAdmin):
+    list_display = ('author', 'post', 'post_date')
+    list_filter = ('author', 'post', 'post_date')
+    search_fields = ('author', 'post', 'post_date')
+    filter_horizontal = ()
