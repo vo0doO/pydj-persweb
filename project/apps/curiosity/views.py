@@ -429,7 +429,7 @@ def get_all_img(html, p):
             image = CImage.objects.create(
                 id=self.article_slug,
                 urls_x300=img["alt"],
-                url_prefix="http://io.net.ru:2015/img/",
+                url_prefix="http://io.net.ru/img/",
                 url_sufix=".jpg",
                 role=str("б" + str(count)),)
 
@@ -483,7 +483,7 @@ def post_maker(request):
 
                 image = CImage.objects.create(
                     id=p.slug,
-                    url_prefix="http://io.net.ru:2015/img/",
+                    url_prefix="http://io.net.ru/img/",
                     url_sufix=".jpg",
                     role=str("б" + str(count)),
                     )

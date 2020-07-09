@@ -144,7 +144,7 @@ class Post(models.Model):
 
     def display_image(self):
         if self.slug:
-            return mark_safe('<img src="http://io.net.ru:2015/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
+            return mark_safe('<img src="http://io.net.ru/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
         else:
             return 'none'
     display_image.short_description = 'Изображение'

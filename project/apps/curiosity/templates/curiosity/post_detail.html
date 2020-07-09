@@ -6,7 +6,7 @@
 {% include 'base/include/html/atom/meta_description.html' %}
 {% include 'base/include/html/atom/meta_name.html' %}
 {% include 'base/include/html/atom/meta_property.html' %}
-<meta property="og:image" content="http://io.net.ru:2015/img/{{object.img.id}}.png" />
+<meta property="og:image" content="http://io.net.ru/img/{{object.img.id}}.png" />
 {% endblock extra_meta %}
 {% block content %}
 <style>
@@ -28,7 +28,7 @@
   (max-width: 1024px) and (-webkit-max-device-pixel-ratio: 1.5),
   (max-width: 1024px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('http://io.net.ru:2015/img/blog/bg_1024.jpg');
+      background-image: url('http://io.net.ru/img/blog/bg_1024.jpg');
     }
   }
 
@@ -37,7 +37,7 @@
   (min-width: 1025px) and (max-width: 2048px) and (-webkit-max-device-pixel-ratio: 1.5),
   (min-width: 1025px) and (max-width: 2048px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('http://io.net.ru:2015/img/blog/bg_2048.jpg');
+      background-image: url('http://io.net.ru/img/blog/bg_2048.jpg');
     }
   }
 
@@ -46,7 +46,7 @@
   (min-width: 2049px) and (-webkit-max-device-pixel-ratio: 1.5),
   (min-width: 2049px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('http://io.net.ru:2015/img/blog/bg_2880.jpg');
+      background-image: url('http://io.net.ru/img/blog/bg_2880.jpg');
     }
   }
 
@@ -257,7 +257,7 @@
   }
 
   .demo-blog .shopping .mdl-card__media {
-    background-image: url('http://io.net.ru:2015/img/blog/shopping.jpg');
+    background-image: url('http://io.net.ru/img/blog/shopping.jpg');
   }
 
   .demo-blog .demo-blog__posts>.demo-nav {
@@ -330,7 +330,7 @@
   }
 
   .demo-blog--blogpost .demo-blog__posts>.mdl-card .mdl-card__media {
-    background-image: url('http://io.net.ru:2015/img/{{ object.slug }}.png');
+    background-image: url('http://io.net.ru/img/{{ object.slug }}.png');
     height: 280px;
   }
 
@@ -515,7 +515,7 @@
   .demo-blog .minilogo {
     width: 44px;
     height: 44px;
-    background-image: url('http://io.net.ru:2015/img/blog/avatar.png');
+    background-image: url('http://io.net.ru/img/blog/avatar.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: 50%;
@@ -540,7 +540,7 @@
     z-index: 900;
   }
 </style>
-<img src="http://io.net.ru:2015/img/{{object.img.id}}.png" style="display: none;"></img>
+<img src="http://io.net.ru/img/{{object.img.id}}.png" style="display: none;"></img>
 <div class="demo-blog demo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
   <main class="mdl-layout__content">
     <div class="demo-back">
@@ -596,7 +596,7 @@
 {% comment %} {% extends 'base/base.html' %}
 {% block extra_meta %}
 <meta property="og:title" content="{{ object.title }}" />
-<meta property="og:image" content="http://io.net.ru:2015/img/{{object.img.id}}.png_draws.png" />
+<meta property="og:image" content="http://io.net.ru/img/{{object.img.id}}.png_draws.png" />
 {% endblock extra_meta %}
 
 {% block content %}
