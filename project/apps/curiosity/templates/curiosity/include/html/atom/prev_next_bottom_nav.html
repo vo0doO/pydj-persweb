@@ -6,7 +6,7 @@
     {% with object as post %}
   
 
-        {% if post|post_previous %}
+        {% if post|post_previous is not None %}
 
           <a href="/curiosity/posts/{{ post|post_previous }}" class="demo-nav__button">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
@@ -15,9 +15,7 @@
             Предъидущая статья
           </a>
         {% else %}
-          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-            <i class="material-icons">arrow_back</i>
-          </button>
+
         {% endif %}
 
         {% if post|post_next is not None %}
@@ -31,9 +29,7 @@
           </a>
         
         {% else %}
-          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation" disabled>
-            <i class="material-icons">arrow_forward</i>
-          </button>
+
         {% endif %}
 
 

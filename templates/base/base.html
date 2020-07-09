@@ -1,16 +1,10 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  {% block title %}
-    <title>Веб портал - Кирсанова Данила Олеговича</title>
-  {% endblock title %}
-  
-  {% load static %}
-
-    {% block meta %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <title>{% block title %}Веб портал - Кирсанова Данила Олеговича{% endblock title %}</title>
+
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" sizes="192x192" href="images/android-desktop.png">
@@ -24,13 +18,12 @@
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
-
-    <link rel="shortcut icon" href="images/favicon.png">
     <link id=canon rel="canonical" href="http://www.example.com/">
-    
-    {% endblock meta %}
+  
+  {% load static %}
   
   {% block extra_meta %}
+
   {% endblock extra_meta %}
   
   {% block link %}
@@ -46,23 +39,13 @@
 
 </head>
 
-
-
-  
 <body>
+
+  {% include 'base/include/html/atom/message.html' %}
   {% block body %}
   
   <div class="mdl-layout__container">
     
-  {% if messages %}
-      {% for message in messages %}
-      <div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
-        <div class="mdl-snackbar__text">{{ message }}</div>
-        <button class="mdl-snackbar__action" type="button"></button>
-      </div>
-      {% endfor %}
-  {% endif %}
-
   {% block style %}
     {% include 'base/include/css/styles.css.html' %}
   {% endblock style %}
@@ -82,7 +65,7 @@
 
     <!-- Drawer -->
     {% block drawer %}
-            {% include 'base/include/html/atom/drawer.html' %}
+      {% include 'base/include/html/atom/drawer.html' %}
     {% endblock drawer %}
     
       <main class="android-content mdl-layout__content"> 
@@ -102,18 +85,13 @@
 
   <!-- Java Script -->
     <script src="https://code.getmdl.io/1.2.1/material.min.js"> </script>
-    {% include 'base/include/js/heap.js.html' %}
+    <script src="{% static 'curiosity/js/render/canonicalLink.js' %}"
+    {% include 'base/include/js/vk.js.html' %}
     {% include 'base/include/js/metrika.js.html' %}
 
   {% block optional_javascript %}
   {% endblock optional_javascript %}
-  <script type="text/javascript">
-    (function () {
-      var hr = window.location;
-      var ca = document.getElementById("canon");
-      return ca.href = hr;
-    })()
-  </script>
+
   {% endblock body %}
 </body>
 

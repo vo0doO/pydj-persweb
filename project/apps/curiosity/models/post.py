@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.db import models
 from django.http import HttpRequest, HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.html import mark_safe
 from parso.python.diff import DiffParser
 
@@ -130,13 +130,13 @@ class Post(models.Model):
     )
 
     def text_wrap(self):
-        if len(self.text) > 196:
+        if len(self.text) > 200:
             return self.text[0:200] + "..."
         else:
-            return text
+            return self.text
 
     def get_absolute_url(self):
-        return HttpResponseRedirect(reverse("curiosity:post-detail", args=(self.slug,)[1:]))
+        return HttpResponseRedirect(reverse_lazy("curiosity:post-detail", self.slug))    # , args=(self.slug,)[1:])
 
     def display_tag(self):
         return ', '.join([tag.name for tag in self.tags.all()[:]])
@@ -159,12 +159,6 @@ class Post(models.Model):
     def get_comment_list(self):
         comment_list = PostComment.objects.filter(post_id=self.id)
         return comment_list[::-1]
-    
-    @property
-    def is_readypub(self):
-        if self.text and self.title and self.img:
-            return True
-        return False
 
     def __str__(self):
         return str(self.title)

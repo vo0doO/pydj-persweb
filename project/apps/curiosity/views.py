@@ -1,43 +1,41 @@
-from django.shortcuts import get_object_or_404
 import datetime
-from project.apps.curiosity.models import PostAuthor, Post, PostComment
-from project.apps.curiosity.parser.curiosity_one_post import *
 import logging
 import os
 import sys
 import time
 import urllib
 from urllib.parse import urlparse
+
+import django.contrib.admin.helpers as help
 import PIL
 import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
-from django.contrib.auth.decorators import permission_required
-from django.conf import settings
-from django.utils import timezone
 from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.views.generic import DetailView, ListView, View
-from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.contrib.contenttypes.models import ContentType
-from authentication.models import CustomUser as User
-from project.apps.curiosity.models import (Channel, Post, PostComment, Tag)
-from project.apps.curiosity.models import Image as CImage
-logger = logging.getLogger(__name__)
-import django.contrib.admin.helpers as help
-from django.contrib import messages
 
+from authentication.models import CustomUser as User
+from project.apps.curiosity.forms import PostCommentForm
+from project.apps.curiosity.models import Channel
+from project.apps.curiosity.models import Image as CImage
+from project.apps.curiosity.models import Post, PostAuthor, PostComment, Tag
+from project.apps.curiosity.parser.curiosity_one_post import *
+
+start_count, final_count = 101, 200
+TIMEOUT = 100
+
+logger = logging.getLogger(__name__)
 def get_logs():
     fmt = logging.Formatter(
         '%(asctime)s %(levelname)s %(module)s %(funcName)s %(message)s')
@@ -56,35 +54,7 @@ def get_logs():
 
     root_logger.setLevel(logging.INFO)
     return root_logger
-
 l = get_logs()
-
-
-from project.apps.curiosity.forms import PostCommentForm
-
-
-def manage_comment(request, slug):
-    post = Post.objects.get(slug=slug)
-    if request.method == "POST":
-        comment = PostComment.objects.create(post_id=post.id, author=request.user, post_date=datetime.datetime.now())
-        form = PostCommentForm(request.POST, instance=comment) or None
-        if form.is_valid():
-            if (form.cleaned_data['description'] is not Null) and (len(form.cleaned_data['description']) > 1):
-                comment.description = form.cleaned_data['description']
-                comment.save()
-                form.save()
-                return HttpResponseRedirect(str("/curiosity/posts/" + str(post.slug) + "/"))
-            else:
-                messages.error(self.request, "Коментарий не должен быть пустым !")
-                form = PostCommentForm()
-                return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
-        else:
-            messages.error(self.request, "Что-то пошло не так !")
-            form = PostCommentForm()
-            return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
-    else:
-        form = PostCommentForm()
-        return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
 
 
 class PostListView(ListView):
@@ -250,7 +220,6 @@ class PostAuthorDeleteView(DeleteView):
     fields = "__all__"
 
 
-
 class PostByChannelListView(ListView):
     model = Post
 
@@ -269,75 +238,6 @@ class PostByAuthorListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.queryset.filter(author_id=self.request.user.id)
-
-
-def index(request):
-    """Просмотр функции для главной страницы сайта."""
-
-    # Сформировать подсчеты некоторых из основных объектов
-    num_posts = Post.objects.all().count()
-    num_channels = Channel.objects.all().count()
-
-    # Опубликованные посты (status = 'a')
-    num_pub = len([post.status for post in Post.objects.all()
-                   if post.status == "Опубликован"])
-    num_new = len([post.status for post in Post.objects.all()
-                   if post.status == "Обнаружен"])
-    # «Все ()» подразумевается по умолчанию.
-    num_tags = Tag.objects.count()
-
-    # Количество посещений этой cnhfybws, поскольку, подсчитанных в переменной сеанса.
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits+1
-
-    context = {
-        'num_new': num_new,
-        'num_posts': num_posts,
-        'num_channels': num_channels,
-        'num_pub': num_pub,
-        'num_tags': num_tags,
-        'num_visits': num_visits,
-    }
-
-    # Рендер шаблон HTML index.html с данными в переменном контексте
-    return render(request, 'curiosity/index.html', context=context)
-
-
-def check_channel(channel):
-    if channel is None:
-        return
-    elif Channel.objects.get_or_create(name=channel)[1]:
-        channel = Channel.objects.get_or_create(name=channel)[0]
-        channel.save()
-        return channel
-    else:
-        channel = Channel.objects.get_or_create(name=channel)[0]
-        return channel
-
-
-def check_tags(tags):
-    tags_obj = []
-    if tags is None:
-        return
-    else:
-        for tag in tags:
-            if Tag.objects.get_or_create(name=tag)[1]:
-                tag_obj = Tag.objects.get_or_create(name=tag)[0]
-                tag_obj.save()
-                tags_obj.append(tag_obj)
-            else:
-                tag_obj = Tag.objects.get_or_create(name=tag)[0]
-                tags_obj.append(tag_obj)
-    return tags_obj
-
-
-def add_tags(post, tags):
-    for tag in check_tags(tags):
-        post.tags.add(tag)
-
-
-start_count, final_count = 101, 200
-TIMEOUT = 100
 
 
 class PageParser:
@@ -423,6 +323,89 @@ class CardParser:
             print("Ошибка загрузки изображения обложки")
         print("Скачено изображение обложки")
 
+def manage_comment(request, slug):
+    post = Post.objects.get(slug=slug)
+    if request.method == "POST":
+        comment = PostComment.objects.create(post_id=post.id, author=request.user, post_date=datetime.datetime.now())
+        form = PostCommentForm(request.POST, instance=comment) or None
+        if form.is_valid():
+            if (form.cleaned_data['description'] is not Null) and (len(form.cleaned_data['description']) > 1):
+                comment.description = form.cleaned_data['description']
+                comment.save()
+                form.save()
+                return HttpResponseRedirect(str("/curiosity/posts/" + str(post.slug) + "/"))
+            else:
+                messages.error(self.request, "Коментарий не должен быть пустым !")
+                form = PostCommentForm()
+                return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
+        else:
+            messages.error(self.request, "Что-то пошло не так !")
+            form = PostCommentForm()
+            return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
+    else:
+        form = PostCommentForm()
+        return render(request, 'curiosity/include/html/atom/comment_form.html', {'form': form})
+
+def index(request):
+    """Просмотр функции для главной страницы сайта."""
+
+    # Сформировать подсчеты некоторых из основных объектов
+    num_posts = Post.objects.all().count()
+    num_channels = Channel.objects.all().count()
+
+    # Опубликованные посты (status = 'a')
+    num_pub = len([post.status for post in Post.objects.all()
+                   if post.status == "Опубликован"])
+    num_new = len([post.status for post in Post.objects.all()
+                   if post.status == "Обнаружен"])
+    # «Все ()» подразумевается по умолчанию.
+    num_tags = Tag.objects.count()
+
+    # Количество посещений этой cnhfybws, поскольку, подсчитанных в переменной сеанса.
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
+
+    context = {
+        'num_new': num_new,
+        'num_posts': num_posts,
+        'num_channels': num_channels,
+        'num_pub': num_pub,
+        'num_tags': num_tags,
+        'num_visits': num_visits,
+    }
+
+    # Рендер шаблон HTML index.html с данными в переменном контексте
+    return render(request, 'curiosity/index.html', context=context)
+
+def check_channel(channel):
+    if channel is None:
+        return
+    elif Channel.objects.get_or_create(name=channel)[1]:
+        channel = Channel.objects.get_or_create(name=channel)[0]
+        channel.save()
+        return channel
+    else:
+        channel = Channel.objects.get_or_create(name=channel)[0]
+        return channel
+
+def check_tags(tags):
+    tags_obj = []
+    if tags is None:
+        return
+    else:
+        for tag in tags:
+            if Tag.objects.get_or_create(name=tag)[1]:
+                tag_obj = Tag.objects.get_or_create(name=tag)[0]
+                tag_obj.save()
+                tags_obj.append(tag_obj)
+            else:
+                tag_obj = Tag.objects.get_or_create(name=tag)[0]
+                tags_obj.append(tag_obj)
+    return tags_obj
+
+def add_tags(post, tags):
+    for tag in check_tags(tags):
+        post.tags.add(tag)
 
 def get_html(html):
     clean_html = ""
@@ -446,7 +429,7 @@ def get_all_img(html, p):
             image = CImage.objects.create(
                 id=self.article_slug,
                 urls_x300=img["alt"],
-                url_prefix="http://io.net.ru:1443/img/",
+                url_prefix="http://io.net.ru:2015/img/",
                 url_sufix=".jpg",
                 role=str("б" + str(count)),)
 
@@ -500,7 +483,7 @@ def post_maker(request):
 
                 image = CImage.objects.create(
                     id=p.slug,
-                    url_prefix="http://io.net.ru:1443/img/",
+                    url_prefix="http://io.net.ru:2015/img/",
                     url_sufix=".jpg",
                     role=str("б" + str(count)),
                     )
@@ -518,7 +501,3 @@ def post_maker(request):
 
         time.sleep(10)
         continue
-
-from django.contrib.auth.decorators import login_required
-
-

@@ -1,0 +1,6 @@
+{% if messages %} {% for message in messages %}
+<div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text">{{ message }}</div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>
+{% endfor %} {% endif %}

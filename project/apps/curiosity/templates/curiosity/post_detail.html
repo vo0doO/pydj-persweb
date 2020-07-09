@@ -1,10 +1,12 @@
 {% extends 'base/base.html' %}
 
 {% load static %}
-
+{% block title %}{{ object.title }}{% endblock title %}
 {% block extra_meta %}
-<meta property="og:title" content="{{ object.title }}" />
-<meta property="og:image" content="http://io.net.ru:1443/img/{{object.img.id}}.png_draws.png" />
+{% include 'base/include/html/atom/meta_description.html' %}
+{% include 'base/include/html/atom/meta_name.html' %}
+{% include 'base/include/html/atom/meta_property.html' %}
+<meta property="og:image" content="http://io.net.ru:2015/img/{{object.img.id}}.png_draws.png" />
 {% endblock extra_meta %}
 {% block content %}
 <style>
@@ -594,7 +596,7 @@
 {% comment %} {% extends 'base/base.html' %}
 {% block extra_meta %}
 <meta property="og:title" content="{{ object.title }}" />
-<meta property="og:image" content="http://io.net.ru:1443/img/{{object.img.id}}.png_draws.png" />
+<meta property="og:image" content="http://io.net.ru:2015/img/{{object.img.id}}.png_draws.png" />
 {% endblock extra_meta %}
 
 {% block content %}
