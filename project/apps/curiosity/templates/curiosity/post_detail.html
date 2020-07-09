@@ -3,10 +3,11 @@
 {% load static %}
 {% block title %}{{ object.title }}{% endblock title %}
 {% block extra_meta %}
+{% include 'base/include/html/atom/meta_vk.html' %}
 {% include 'base/include/html/atom/meta_description.html' %}
 {% include 'base/include/html/atom/meta_name.html' %}
 {% include 'base/include/html/atom/meta_property.html' %}
-<meta property="og:image" content="http://io.net.ru:2015/img/{{object.img.id}}.png_draws.png" />
+<meta property="og:image" content="http://io.net.ru:2015/img/{{object.img.id}}.png" />
 {% endblock extra_meta %}
 {% block content %}
 <style>
