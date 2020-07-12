@@ -543,8 +543,8 @@
 <img src="http://io.net.ru/img/{{object.img.id}}.png" style="display: none;"></img>
 <div class="demo-blog demo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
   <main class="mdl-layout__content">
-    <div class="demo-back">
-      <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href={% url "curiosity:post-list" %}
+    <div class="demo-back" onclick="window.history.back()">
+      <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
         title="go back" role="button">
         <i class="material-icons" role="presentation">arrow_back</i>
       </a>

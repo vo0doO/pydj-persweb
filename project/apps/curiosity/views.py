@@ -309,8 +309,6 @@ class CardParser:
             self.text = self.text + line
         return self.text
 
-
-
     def img_downloader(self):
         url_sufix = self.card_image[0]
         url_prefix = "http://www.discoverychannel.ru"
@@ -491,6 +489,8 @@ def post_maker(request):
                 image.save()
                 p.img = image
                 im.close()
+                p.save()
+                p.format_html()
                 p.save()
                 break
 

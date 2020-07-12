@@ -11,7 +11,7 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.html import mark_safe
 from parso.python.diff import DiffParser
-
+from django.contrib import messages
 from authentication.models import CustomUser as User
 from project.apps.curiosity.models.author import PostAuthor
 from project.apps.curiosity.models.channel import Channel
@@ -129,6 +129,9 @@ class Post(models.Model):
         default="Обнаружен"
     )
 
+    def write(self):
+        return self.save()
+
     def text_wrap(self):
         if len(self.text) > 200:
             return self.text[0:200] + "..."
@@ -136,7 +139,8 @@ class Post(models.Model):
             return self.text
 
     def get_absolute_url(self):
-        return HttpResponseRedirect(reverse_lazy("curiosity:post-detail", self.slug))    # , args=(self.slug,)[1:])
+        # , args=(self.slug,)[1:])
+        return HttpResponseRedirect(reverse_lazy("curiosity:post-detail", self.slug))
 
     def display_tag(self):
         return ', '.join([tag.name for tag in self.tags.all()[:]])
@@ -144,17 +148,41 @@ class Post(models.Model):
 
     def display_image(self):
         if self.slug:
-            return mark_safe('<img src="http://io.net.ru/img/%s.png_draws.png" width="96" height="96"></img>' % self.slug)
+            return mark_safe('<img src="http://io.net.ru/img/%s.png_draws.png" width="400px" height="320px"></img>' % self.slug)
         else:
             return 'none'
     display_image.short_description = 'Изображение'
     display_image.allow_tags = True
 
-    def format_html(self):
+    def clean_img_tag(self):
         soup = BeautifulSoup(self.html, "lxml")
-        imgs = soup.findAll({"img": "href"})
-        for img in imgs:
-            img["src"] = str("http://www.discoverychannel.ru" + img["src"])
+        try:
+            for img in soup.findAll({"img": "href"}):
+                if not img:
+                    raise ValueError("img")
+                else:
+                    img["height"] = "300px"
+                    img["width"] = "500px"
+        except Exception as err:
+            raise ValueError(err)
+        finally:
+            self.html = str(soup.html)
+            self.write()
+
+    def clean_h_tag(self):
+        re2h = re.compile(r'[h+2/3]')
+        soup = BeautifulSoup(self.html, "lxml")
+        try:
+            for h in soup.findAll({re2h}):
+                if not ("html" not in h):
+                    raise ValueError("html")
+                else:
+                    h["align"] = "center"
+        except Exception as err:
+            raise NameError(err)
+        finally:
+            self.html = str(soup.html)
+            self.write()
 
     def get_comment_list(self):
         comment_list = PostComment.objects.filter(post_id=self.id)
@@ -164,73 +192,69 @@ class Post(models.Model):
         return str(self.title)
 
     class Meta:
-        ordering = ["-created_date"]
+        ordering = ["created_date"]
         permissions = (('can_mark_returned', 'Can mark returned'),)
 
-    # def clean(self) -> None:
-    
+#   def clean(self) -> None:
+
     #     try:
-    
+
     #         if self.author is not None:
     #             print(f"{self.author} is author field")
     #         else:
     #             raise ValidationError(f"{self.author} field is not Validate")
-    
+
     #         if self.title is not None:
     #             print(f"{self.title} is title field")
     #         else:
     #             raise ValidationError(f"{self.title} field is not Validate")
-    
+
     #         if self.text is not None:
     #             print(f"{self.text} is text field")
     #         else:
     #             raise ValidationError(f"{self.text} field is not Validate")
-    
+
     #         if self.html is not None:
     #             print(f"{self.html} is html field")
     #         else:
     #             raise ValidationError(f"{self.html} field is not Validate")
-    
+
     #         if self.url is not None:
     #             print(f"{self.url} is url field")
     #         else:
     #             raise ValidationError(f"{self.url} field is not Validate")
-    
+
     #         if self.channel is not None:
     #             print(f"{self.channel} is channel field")
     #         else:
     #             raise ValidationError(f"{self.channel} field is not Validate")
-    
+
     #         if self.tags is not None:
     #             print(f"{self.tags} is tags field")
     #         else:
     #             raise ValidationError(f"{self.ags} field is not Validate")
-    
+
     #         if self.created_date is not None:
     #             print(f"{self.created_date} is created field")
     #         else:
     #             raise ValidationError(
     #                 f"{self.created_date} field is not Validate")
-    
+
     #         if self.pub is not None:
     #             print(f"{self.pub} is pub field")
     #         else:
     #             raise ValidationError(f"{self.pub_date} field is not Validate")
-    
+
     #         if self.slug is not None:
     #             print(f"{self.slug} is slug field")
     #         else:
     #             raise ValidationError(f"{self.slug} field is not Validate")
-    
+
     #         if self.img is not None:
     #             print(f"{self.img} is img field")
     #         else:
     #             raise ValidationError(f"{self.img} field is not Validate")
-    
+
     #     except Exception as error:
     #         print(f"Error: {error.args}")
     #         return
-
-
-if __name__ == "__main__":
-    pass

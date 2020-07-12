@@ -1,0 +1,60 @@
+{% if page_obj.has_previous %}
+
+    <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+      <div class="section-spacer"></div>
+      <a href="?page={{ page_obj.previous_page_number }}" class="demo-nav__button" title="show more">
+        Предъидущая
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          <i class="material-icons" role="presentation">arrow_back</i>
+        </button>
+      </a>
+    </nav>
+
+    <div class="section-spacer"></div>
+
+    <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+      <div class="section-spacer"></div>
+        <a href="?page=1" class="demo-nav__button" title="show more">
+            Первая
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_back</i>
+            </button>
+        </a>
+    </nav>
+
+{% endif %}
+
+    <div class="section-spacer"></div>
+
+    <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+      <div class="section-spacer"></div>
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+    </nav>
+
+{% if page_obj.has_next %}
+
+    <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+      <div class="section-spacer"></div>
+      <a href="?page={{ page_obj.next_page_number }}" class="demo-nav__button" title="show more">
+        Следующая
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          <i class="material-icons" role="presentation">arrow_forward</i>
+        </button>
+      </a>
+    </nav>
+
+    <div class="section-spacer"></div>
+
+    <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+      <div class="section-spacer"></div>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="demo-nav__button" title="show more">
+            Последняя
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_forward</i>
+            </button>
+        </a>
+    </nav>
+
+{% endif %}

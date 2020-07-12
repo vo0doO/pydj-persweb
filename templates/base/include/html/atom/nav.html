@@ -2,12 +2,8 @@
   {% if user.is_authenticated %}
     <a 
       class="mdl-navigation__link mdl-typography--text-uppercase" 
-      href="http://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=2875&dst=100075&date=21.05.2020"
-    >Конституция</a>
-    <a 
-      class="mdl-navigation__link mdl-typography--text-uppercase" 
-      href="http://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=346019&dst=1000000001&date=21.05.2020#029392117186235645"
-    >Поправки</a>
+      href="{% url 'curiosity:post-list' %}"
+    >Интересное</a>
     <a 
       class="mdl-navigation__link mdl-typography--text-uppercase" 
       href="{% url 'curiosity:index' %}"

@@ -1,6 +1,7 @@
 {% with object as post %}
-    <meta property="og:url" content="https://gate.io.net.ru" />
-    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://news.io.net.ru/curiosity/posts/{{post.slug}}" />
+    <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ post.title }}" />
-    <meta property="og:description" content="{{ post.text_wrap }}" />
+    <meta property="og:description"
+        content="{{ post.text_wrap }}" />
 {% endwith %}

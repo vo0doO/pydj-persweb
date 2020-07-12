@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block content %}
-    <style>
+  <style>
       body::before {
         background-size: cover;
         background-attachment: fixed;
@@ -186,7 +186,6 @@
           -ms-flex-order: -1;
               order: -1;
     }
-    
     .demo-blog .something-else .mdl-card__media {
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -311,7 +310,6 @@
       font-size: 16px;
       line-height: 28px;
     }
-    
     .demo-blog--blogpost .comments {
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -426,7 +424,6 @@
       padding-top: 32px;
       padding-left: 48px;
     }
-    
     .demo-blog--blogpost .demo-back {
       position: absolute;
       top: 16px;
@@ -456,14 +453,12 @@
       border-radius: 22px;
       background-color: #F5F5F5;
     }
-    
     /* Fixes for IE 10 */
     .mdl-grid {
       display: -webkit-flex !important;
       display: -ms-flexbox !important;
       display: flex !important;
     }
-      
     #view-source {
       position: fixed;
       display: block;
@@ -474,13 +469,11 @@
       z-index: 900;
     }
     </style>
-
     <div class="demo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
       <main class="mdl-layout__content">
         <div class="demo-blog__posts mdl-grid">
 
         {% for post in post_list %}
-        
             <style>
               .demo-blog .html-{{post.slug}} .mdl-card__media {
                 background-image: url("http://io.net.ru/img/{{post.slug}}.png");
@@ -494,72 +487,13 @@
               <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
                 {{ post.text|truncatechars:220 }}
               </div>
-              <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-                <div class="minilogo"></div>
-                <div>
-                  <strong>Опубликовал {{ post.author }} </strong>
-                  <span>{{ post.created_date }}</span>
-                </div>
-              </div>
-            </div>
 
+            </div>
         {% endfor %}
         
-        {% if page_obj.has_previous %}
-
-          <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-            <div class="section-spacer"></div>
-            <a href="?page={{ page_obj.previous_page_number }}" class="demo-nav__button" title="show more">
-              Предъидущая
-              <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                <i class="material-icons" role="presentation">arrow_back</i>
-              </button>
-            </a>
-          </nav>
-
-          <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-            <div class="section-spacer"></div>
-              <a href="?page=1" class="demo-nav__button" title="show more">
-                  Первая
-                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                    <i class="material-icons" role="presentation">arrow_back</i>
-                  </button>
-              </a>
-          </nav>
-
-        {% endif %}
-
-          <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-            <div class="section-spacer"></div>
-              <span class="current">
-                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-              </span>
-          </nav>
-
-        {% if page_obj.has_next %}
-          <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-            <div class="section-spacer"></div>
-            <a href="?page={{ page_obj.next_page_number }}" class="demo-nav__button" title="show more">
-              Следующая
-              <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                <i class="material-icons" role="presentation">arrow_forward</i>
-              </button>
-            </a>
-          </nav>
-
-          <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-            <div class="section-spacer"></div>
-              <a href="?page={{ page_obj.paginator.num_pages }}" class="demo-nav__button" title="show more">
-                  Последняя
-                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                    <i class="material-icons" role="presentation">arrow_forward</i>
-                  </button>
-              </a>
-          </nav>
-        {% endif %}
+          {% include 'curiosity/include/html/atom/pagination_posts_list_navs.html' %}
 
         </div>
-
       </main>
       <div class="mdl-layout__obfuscator"></div>
     </div>
@@ -579,55 +513,5 @@
             });
           });
         </script>
+
 {% endblock content %}
-{% comment %} 
-        <!-- 
-  </body>
- -->
-
-
-
-
-<!-- {% extends 'base/base.html' %}
-
-{% load static %}
-
-{% block content %}
-    
-<div class="mdl-layout__content">
-{% for post in post_list %}
-        
-              <style>
-                  .mdl-card-image.{{post.slug}} {
-                    width: 400px;
-                    height: 320px;
-                    padding: 10%;
-                    background: url("http://io.net.ru/img/{{post.slug}}.png_draws.png") center / cover;
-                  }
-              </style>
-              <a href="{% url 'curiosity:post-detail' post.slug %}">
-                  <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--1-col-tablet mdl-card-image {{post.slug}} mdl-shadow--4dp">
-                  </div>
-              </a>
-        
-{% endfor %}
-
-<div class="pagination">
-  <span class="step-links">
-      {% if page_obj.has_previous %}
-          <a href="?page=1">&laquo; first</a>
-          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-      {% endif %}
-
-      <span class="current">
-          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-      </span>
-
-      {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}">next</a>
-          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-      {% endif %}
-  </span>
-</div>
-</div>
- --> {% endcomment %}

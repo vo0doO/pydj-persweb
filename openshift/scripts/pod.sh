@@ -4,5 +4,5 @@ pod() {
     oc get pods --selector $selector -o jsonpath="{.items[$query].metadata.name}"
 }
 
-POD=$(pod app=pydj-persweb)
+POD=$(pod name="blog")
 echo $POD
