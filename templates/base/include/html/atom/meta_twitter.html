@@ -1,0 +1,10 @@
+
+{% with object as post %}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="https://new.io.net.ru/" />
+    <meta name="twitter:title" content="{{ post.title }}" />
+    <meta name="twitter:description" content="{{ post.text_wrap }}" />
+    <meta property="twitter:image" content="http://io.net.ru/img/{{post.img.id}}.png_draws.png" />
+{% endwith %}
+    
+

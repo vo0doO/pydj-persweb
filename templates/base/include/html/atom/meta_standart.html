@@ -1,0 +1,6 @@
+
+{% with object as post %}
+    <meta name="title" content="{{ post.title }}">
+    <meta name="description" content="{{ post.text_wrap }}" />
+    <meta property="yandex_recommendations_title" content="{{ post.title }}">
+{% endwith %}

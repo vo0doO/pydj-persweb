@@ -1,0 +1,11 @@
+{% with object as post %}
+    <meta property="og:site_name" content="Любопытство">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ post.title }}" />
+    <meta property="og:image" content="http://io.net.ru/img/{{object.img.id}}.png_draws.png" />
+    <meta property="og:url" content="https://news.io.net.ru/curiosity/posts/{{post.slug}}" />
+    <meta property="og:description" content="{{ post.text_wrap }}" />
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+{% endwith %}

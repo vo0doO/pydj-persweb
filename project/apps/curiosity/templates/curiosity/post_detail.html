@@ -3,10 +3,7 @@
 {% load static %}
 {% block title %}{{ object.title }}{% endblock title %}
 {% block extra_meta %}
-{% include 'base/include/html/atom/meta_description.html' %}
-{% include 'base/include/html/atom/meta_name.html' %}
-{% include 'base/include/html/atom/meta_property.html' %}
-<meta property="og:image" content="http://io.net.ru/img/{{object.img.id}}.png" />
+{% include 'base/include/html/molecule/meta_tags.html' %}
 {% endblock extra_meta %}
 {% block content %}
 <style>
@@ -540,7 +537,7 @@
     z-index: 900;
   }
 </style>
-<img src="http://io.net.ru/img/{{object.img.id}}.png" style="display: none;"></img>
+<img src="http://io.net.ru/img/{{object.img.id}}.png_draws.png" style="display: none;"></img>
 <div class="demo-blog demo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
   <main class="mdl-layout__content">
     <div class="demo-back" onclick="window.history.back()">
