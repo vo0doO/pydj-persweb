@@ -9,7 +9,7 @@ python-memcached
 django-clear-cache
 
 # Debug toolbar
-django-debug-toolbar==1.8
+django-debug-toolbar==1.11.1
 
 # Project custom apps
 django-split-settings
