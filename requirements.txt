@@ -30,4 +30,4 @@ vk-api==11.5.0
 lxml==4.6.5
 
 # Image draw
-pillow==9.0.0
+pillow==9.0.1
